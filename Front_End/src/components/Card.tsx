@@ -1,6 +1,23 @@
 import './Card.css';
-import {IonAvatar, IonCard, IonCardContent, IonCardSubtitle, IonIcon, IonItem, IonLabel} from '@ionic/react';
-import {chatboxEllipsesOutline, thumbsUpOutline, thumbsDownOutline} from 'ionicons/icons';
+import {
+    IonAvatar,
+    IonButton,
+    IonButtons,
+    IonCard,
+    IonCardContent,
+    IonCardSubtitle,
+    IonContent,
+    IonHeader,
+    IonIcon,
+    IonItem,
+    IonLabel,
+    IonList,
+    IonModal,
+    IonTitle,
+    IonToolbar,
+    useIonActionSheet
+} from '@ionic/react';
+import {chatboxEllipsesOutline, thumbsDownOutline, thumbsUpOutline} from 'ionicons/icons';
 
 import {faker} from '@faker-js/faker';
 import React, {useState} from "react";
@@ -12,10 +29,11 @@ interface Props {
 }
 
 const Card = ({postData}: Props) => {
-
-    const [dislikes, setDislikes] = useState({[postData.id]: 0})
-    const [likes, setLikes] = useState({[postData.id]: 0})
-    const [comments, setComments] = useState({[postData.id]: 0})
+    const [present] = useIonActionSheet();
+    const [isOpen, setIsOpen] = useState(false);
+    const [dislikes, setDislikes] = useState({[postData.id]: 0});
+    const [likes, setLikes] = useState({[postData.id]: 0});
+    const [comments, setComments] = useState({[postData.id]: ['Handsome man']});
 
     postData.username = 'jay232'
 
@@ -25,7 +43,7 @@ const Card = ({postData}: Props) => {
     }
 
     const addLikes = (postId: number) => {
-        setLikes({[postData.id]: likes[postData.id]+1})
+        setLikes({[postData.id]: likes[postData.id] + 1})
         axios.post('https://api.weasoft.com/likes', {
             postId
         })
@@ -38,7 +56,7 @@ const Card = ({postData}: Props) => {
     }
 
     const removeLikes = (postId: number) => {
-        setDislikes({[postData.id]: dislikes[postData.id]+1})
+        setDislikes({[postData.id]: dislikes[postData.id] + 1})
         axios.post('https://api.weasoft.com/likes', {
             postId
         })
@@ -50,40 +68,80 @@ const Card = ({postData}: Props) => {
             });
     }
 
-    return (
-        <IonCard>
-            <IonCardContent>
-                <IonItem class="no_border">
-                    <IonAvatar slot="start">
-                        <img id="avatar" src={'https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg'} alt={`${faker.name.firstName}'s Avatar`}/>
-                    </IonAvatar>
-                    <IonLabel>
-                        <IonCardSubtitle>{postData.username}</IonCardSubtitle>
-                        <p>{UNIX2String(postData.date)}</p>
-                    </IonLabel>
-                    {/* <div className="chip">
-                        <div className='filledChip'> */}
-                    <div className="chip"
+    const promptComment = (postId: number) => {
+        const input = prompt('Write your comment below :)');
+        console.log(input)
+        if (input !== null && input !== '') {
+            setComments({[postId]: [...comments[postId], input]})
+        }
+    }
+
+const showComments = async () => {
+    setIsOpen(!isOpen)
+}
+
+return (
+    <IonCard>
+        <IonModal isOpen={isOpen}>
+            <IonHeader>
+                <IonToolbar>
+                    <IonButtons slot="start">
+                        <IonButton onClick={() => setIsOpen(false)}>Close</IonButton>
+                    </IonButtons>
+                    <IonTitle>Comments</IonTitle>
+                </IonToolbar>
+            </IonHeader>
+
+            <IonContent>
+                <form>
+                    <IonList>
+                        {comments[postData.id].length > 0 ? comments[postData.id].map((el, idx) => {
+                            return <IonItem>
+                                {el}
+                            </IonItem>
+                        }) : 'No comments yet'}
+
+                        <section>
+                            {/*/!*<IonButton id="UploadBtn" style={{ height: "80px", width: "80px" }} color="light" onClick={popup}>*!/*/}
+                            {/*/!*    <IonIcon icon={addOutline}></IonIcon>*!/*/}
+                            {/*/!*</IonButton>*!/*/}
+                            {/*/!*<p>Only jpeg and png allowed.</p>*!/*/}
+                            {/*<br />*/}
+                            <IonButton color='success' expand="block" id="send"
+                                       onClick={() => promptComment(postData.id)}>
+                                <IonIcon icon={chatboxEllipsesOutline}></IonIcon> &nbsp;
+                                Add a comment
+                            </IonButton>
+                        </section>
+                    </IonList>
+                </form>
+            </IonContent>
+        </IonModal>
+        <IonCardContent>
+            <IonItem class="no_border">
+                <IonAvatar slot="start">
+                    <img id="avatar"
+                         src={'https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg'}
+                         alt={`${faker.name.firstName}'s Avatar`}/>
+                </IonAvatar>
+                <IonLabel>
+                    <IonCardSubtitle>{postData.username}</IonCardSubtitle>
+                    <p>{UNIX2String(postData.date)}</p>
+                </IonLabel>
+                <div className="chip"
                          style={{backgroundImage: "url('/assets/a.jpg')", backgroundSize: "100% 100%"}}>
                         <IonLabel color="primary"
                                   style={{fontSize: "small"}}><b>{postData.happiness + "% Happy"}</b></IonLabel>
                     </div>
-                    {/* </div>
-                    </div> */}
                 </IonItem>
 
                 <img src={`https://api.weasoft.com/imgs/${postData.id}`} alt={'happiEee :)'}/>
-                {/* <div style={{backgroundColor:"red"}}>................</div> */}
                 <div>
-                    {/* <img id="avatar" src={faker.image.avatar()}/> */}
                 </div>
                 <br/>
                 {postData.description}.
                 <br/>
                 <br/>
-                {/* <div className='likeContainer'><div className="Like"><IonIcon icon={thumbsUpOutline}></IonIcon>{Math.round(Math.random() * 100)}</div></div>
-                <div className='likeContainer'><div className="Comment"><IonIcon icon={chatboxEllipsesOutline}></IonIcon>{Math.round(Math.random() * 10)}</div></div> */}
-                {/* <IonCardContent style="font-size:18px;font-weight:bold;" id="mycard"> */}
                 <IonIcon icon={thumbsUpOutline}
                          onClick={() => addLikes(postData.id)}
                          style={{cursor: 'pointer'}}>
@@ -97,21 +155,20 @@ const Card = ({postData}: Props) => {
                          style={{cursor: 'pointer'}}>
                 </IonIcon>
 
-                {dislikes[postData.id]} &nbsp;&nbsp;
+            {dislikes[postData.id]} &nbsp;&nbsp;
 
-                <IonIcon icon={chatboxEllipsesOutline}
-                         onClick={() => setComments({[postData.id]: comments[postData.id]+1})}
-                         style={{cursor: 'pointer'}}>
-                </IonIcon>
+            <IonIcon icon={chatboxEllipsesOutline}
+                // onClick={() => setComments({[postData.id]: comments[postData.id]+1})}
+                     onClick={() => showComments()}
+                     style={{cursor: 'pointer'}}>
+            </IonIcon>
 
 
-                {comments[postData.id]} &nbsp;&nbsp;
-                {/* <IonIcon icon={bookmarkOutline}></IonIcon> {Math.round(Math.random()*50)} &nbsp; */}
-                <span style={{float: "right", fontSize: "20px"}}>
+            {comments[postData.id].length} &nbsp;&nbsp;
+            <span style={{float: "right", fontSize: "20px"}}>
                     <IonIcon name="paper-plane-outline"/>
                 </span>
-            </IonCardContent>
-            {/* </IonCardContent> */}
+        </IonCardContent>
         </IonCard>
     );
 };

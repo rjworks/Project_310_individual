@@ -145,11 +145,6 @@ export default function Home() {
           <IonContent>
             <form>
               <IonList>
-                {/*
-                <IonItem>
-                  <IonInput placeholder="Title" id="title"></IonInput>
-                </IonItem> */}
-
                 <IonItem>
                   <IonTextarea autoGrow={true} spellcheck={true} placeholder="Description" id="description"></IonTextarea>
                 </IonItem>
