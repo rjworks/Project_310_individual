@@ -99,5 +99,23 @@ GUI for main components is complete.
 ![GUI](https://github.com/HappieEE123/Project_310/blob/2db917711289f4691fd00371237c6f28f411eff6/imgs/image%204.PNG) 
 
 
+# Individual
+## New features since Assignment 3
 
+### Added a dislike feature. 
+### Before:
+![Before](https://media.discordapp.net/attachments/1001599683786981376/1047421320360628295/before.png)
 
+### After:
+![After](https://media.discordapp.net/attachments/1001599683786981376/1047421320561967134/cachedImage.png)
+
+### Added comments feature
+
+![1](https://media.discordapp.net/attachments/1001599683786981376/1047420905804025856/IMG_2655.png)
+![2](https://media.discordapp.net/attachments/1001599683786981376/1047420906173108274/IMG_2656.png)
+![3](https://media.discordapp.net/attachments/1001599683786981376/1047420906538029116/IMG_2657.png)
+![4](https://media.discordapp.net/attachments/1001599683786981376/1047420906781282314/IMG_2658.png)
+![5](https://media.discordapp.net/attachments/1001599683786981376/1047420907301392404/IMG_2659.png)
+### New features documentation
+ 1. Dislikes - For this new feature, I used Axios to post the new dislikes count into our backend server. I also used Axios to get the dislikes count from our backend server. I used React Ionic for the new buttons and icons.
+ 2. Comments - For this new feature, I used Axios to post and new comments into our backend server. I also used Axios to get the existing comments from our backend server. I used Ionic for the comments section and used prompt for adding new comments.
