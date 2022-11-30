@@ -1,9 +1,9 @@
 import './Card.css';
 import {IonAvatar, IonCard, IonCardContent, IonCardSubtitle, IonIcon, IonItem, IonLabel} from '@ionic/react';
-import {chatboxEllipsesOutline, thumbsUpOutline} from 'ionicons/icons';
+import {chatboxEllipsesOutline, thumbsUpOutline, thumbsDownOutline} from 'ionicons/icons';
 
 import {faker} from '@faker-js/faker';
-import React from "react";
+import React, {useState} from "react";
 import axios from "axios";
 
 interface Props {
@@ -12,13 +12,20 @@ interface Props {
 }
 
 const Card = ({postData}: Props) => {
-    console.log('hello');
+
+    const [dislikes, setDislikes] = useState({[postData.id]: 0})
+    const [likes, setLikes] = useState({[postData.id]: 0})
+    const [comments, setComments] = useState({[postData.id]: 0})
+
+    postData.username = 'jay232'
+
     const UNIX2String = (unixTime: number) => {
         const date = new Date(unixTime * 1000);
         return date.toLocaleDateString()
     }
 
     const addLikes = (postId: number) => {
+        setLikes({[postData.id]: likes[postData.id]+1})
         axios.post('https://api.weasoft.com/likes', {
             postId
         })
@@ -30,8 +37,17 @@ const Card = ({postData}: Props) => {
             });
     }
 
-    const showComments = (postId: number) => {
-
+    const removeLikes = (postId: number) => {
+        setDislikes({[postData.id]: dislikes[postData.id]+1})
+        axios.post('https://api.weasoft.com/likes', {
+            postId
+        })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     return (
@@ -39,10 +55,10 @@ const Card = ({postData}: Props) => {
             <IonCardContent>
                 <IonItem class="no_border">
                     <IonAvatar slot="start">
-                        <img id="avatar" src={faker.image.avatar()} alt={`${faker.name.firstName}'s Avatar`}/>
+                        <img id="avatar" src={'https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg'} alt={`${faker.name.firstName}'s Avatar`}/>
                     </IonAvatar>
                     <IonLabel>
-                        <IonCardSubtitle>{faker.name.firstName().slice(0, 5)}_{faker.name.lastName().slice(0, 5)}{Math.round(Math.random() * 100)}</IonCardSubtitle>
+                        <IonCardSubtitle>{postData.username}</IonCardSubtitle>
                         <p>{UNIX2String(postData.date)}</p>
                     </IonLabel>
                     {/* <div className="chip">
@@ -72,12 +88,24 @@ const Card = ({postData}: Props) => {
                          onClick={() => addLikes(postData.id)}
                          style={{cursor: 'pointer'}}>
                 </IonIcon>
-                {postData.likesCount} &nbsp;
-                <IonIcon icon={chatboxEllipsesOutline}
-                         onClick={() => showComments(postData.id)}
+
+                {likes[postData.id]} &nbsp;&nbsp;
+
+
+                <IonIcon icon={thumbsDownOutline}
+                         onClick={() => removeLikes(postData.id)}
                          style={{cursor: 'pointer'}}>
                 </IonIcon>
-                {Math.round(Math.random() * 50)} &nbsp;
+
+                {dislikes[postData.id]} &nbsp;&nbsp;
+
+                <IonIcon icon={chatboxEllipsesOutline}
+                         onClick={() => setComments({[postData.id]: comments[postData.id]+1})}
+                         style={{cursor: 'pointer'}}>
+                </IonIcon>
+
+
+                {comments[postData.id]} &nbsp;&nbsp;
                 {/* <IonIcon icon={bookmarkOutline}></IonIcon> {Math.round(Math.random()*50)} &nbsp; */}
                 <span style={{float: "right", fontSize: "20px"}}>
                     <IonIcon name="paper-plane-outline"/>
