@@ -99,5 +99,14 @@ GUI for main components is complete.
 ![GUI](https://github.com/HappieEE123/Project_310/blob/2db917711289f4691fd00371237c6f28f411eff6/imgs/image%204.PNG) 
 
 
+# Individual
+## New features since Assignment 3
 
+### Added a dislike feature. 
+### Before:
+![Before](https://media.discordapp.net/attachments/1001599683786981376/1047377417968300092/before.png)
 
+### After:
+![After](https://media.discordapp.net/attachments/1001599683786981376/1047377417641152532/after.PNG)
+
+For this new feature, I used Axios to post the new dislikes count into our backend server. I also used axious to get the dislikes count from our server. I used React Ionic for the buttons and icons.
