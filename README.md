@@ -117,5 +117,7 @@ GUI for main components is complete.
 ![4](https://media.discordapp.net/attachments/1001599683786981376/1047420906781282314/IMG_2658.png)
 ![5](https://media.discordapp.net/attachments/1001599683786981376/1047420907301392404/IMG_2659.png)
 ### New features documentation
- 1. Dislikes - For this new feature, I used Axios to post the new dislikes count into our backend server. I also used Axios to get the dislikes count from our backend server. I used React Ionic for the new buttons and icons. Used React State to keep track of dislikes count and new dislikes being added.
+ 1. Dislikes - For this new feature, I used Axios to post the new dislikes count into our backend server. I also used Axios to get the dislikes count from our backend server. I used React Ionic for the new buttons and icons. Used React State to keep track of dislikes count and new dislikes being added.\
+ - This feature allows users to dislike posts (by other users) they may not like.
  2. Comments - For this new feature, I used Axios to post and new comments into our backend server. I also used Axios to get the existing comments from our backend server. I used Ionic for the comments section and used prompt for adding new comments. Used React State to keep track of new comments being added and the existing ones.
+ - This feature allows users to read and share their thoughts and posts by other users.
